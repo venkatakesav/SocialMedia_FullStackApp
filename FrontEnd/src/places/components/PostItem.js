@@ -10,21 +10,35 @@ import LoadingSpinner from "../../shared/components/UIElements/LoadingSpinner"
 import Modal from "../../shared/components/UIElements/Modal"
 import "./PlaceItem.css"
 import Card from "../../shared/components/UIElements/Card"
-
+import Input from "../../shared/components/FormElements/Input"
+import { useForm } from '../../shared/hooks/form-hook';
+import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH } from "../../shared/util/validators"
 
 function PostItem(props) {
+  let pid = useParams().placeId
+
+  const [formState, inputHandler] = useForm(
+    {
+      concern: {
+        value: '',
+        isValid: false
+      },
+    },
+    false);
+
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const auth = useContext(AuthContext)
   const [showConfirm, showUpdateConfirm] = useState(false);
   const [disable, setDisable] = useState(false);
 
-  const showDeleteWarningHandler = () => {
+  const showModal = () => {
     showUpdateConfirm(true);
   }
 
-  const CancelDeleteWarningHandler = () => {
+  const cancelModal = () => {
     showUpdateConfirm(false);
   }
+
 
   const confirmDeleteHandler = async () => {
     console.log("DELETING.......");
@@ -104,6 +118,25 @@ function PostItem(props) {
     }
   }
 
+  const reportHandler = async (event) => {
+    event.preventDefault()
+    console.log("REPORTING.......");
+    console.log(formState.inputs.concern.value)
+    try {
+
+      console.log(props.id)
+      await sendRequest(`http://localhost:5000/api/reports/${auth.userId}/${pid}`, 'POST', JSON.stringify({
+        post_id: props.id,
+        concern: formState.inputs.concern.value
+      }), {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + auth.token
+      })
+    } catch (err) {
+      console.log("Error")
+    }
+  }
+
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
@@ -122,15 +155,38 @@ function PostItem(props) {
               <p>{props.description}</p> */}
           </div>
           <div className="place-item__actions">
-            {auth.userId != props.creatorId && auth.isLoggedIn && <Button onClick={upvoteHandler}>UPVOTE</Button>}
-            {auth.isLoggedIn && <Button danger onClick={downvoteHandler}>DOWNVOTE</Button>}
+            {auth.userId != props.creatorId && auth.isLoggedIn && <Button onClick={upvoteHandler}>UP</Button>}
+            {auth.isLoggedIn && <Button danger onClick={downvoteHandler}>DOWN</Button>}
             {auth.userId != props.postedBy && auth.isLoggedIn && <Button onClick={followHandler} disabled={disable}>FOLLOW</Button>}
+            {auth.userId != props.postedBy && auth.isLoggedIn && <Button danger onClick={showModal}>REPORT</Button>}
             <Button onClick={saveHandler}>SAVE</Button>
           </div>
         </Card>
       </li>
+      <Modal show={showConfirm} onCancel={cancelModal}
+        header="Add Report"
+        footerClass="place-item__modal-actions"
+        footer={
+          <React.Fragment>
+            <Button inverse onClick={cancelModal}>Cancel</Button>
+            <Button danger disabled={!formState.isValid} onClick={reportHandler}>Confirm</Button>
+          </React.Fragment>
+        }>
+        <form className="place-form" onSubmit={reportHandler}>
+          {isLoading && <LoadingSpinner asOverlay />}
+          {/* {console.log(formState.inputs)} */}
+          <Input
+            id="concern"
+            element="text"
+            type="text"
+            label="Concern"
+            validators={[VALIDATOR_MINLENGTH(5)]}
+            errorText="Please enter a valid Concern (at least 5 characters)."
+            onInput={inputHandler}
+          />
+        </form>
+      </Modal>
     </React.Fragment>
-    // <p>Hello World</p>
   )
 }
 export default PostItem

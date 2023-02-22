@@ -14,7 +14,33 @@ import Modal from '../../shared/components/UIElements/Modal';
 import { Link } from 'react-router-dom';
 import UserMod from '../components/UserMod';
 import JoiningMod from '../components/JoiningMod';
+import ReportsList from '../components/ReportsList';
+import Card from '../../shared/components/UIElements/Card';
 import './UserPlaces.css';
+
+const DUMMY_REPORTS = [
+    {
+        id: 'r1',
+        reported_by: 'Reported By',
+        reported_per: 'Reported On',
+        concern: 'Concern',
+        post_id: 'Post ID',
+    },
+    {
+        id: 'r2',
+        reported_by: 'Reported By 2',
+        reported_per: 'Reported On 2',
+        concern: 'Concern 2',
+        post_id: 'Post ID 2',
+    },
+    {
+        id: 'r3',
+        reported_by: 'Reported By 3',
+        reported_per: 'Reported On 3',
+        concern: 'Concern 3',
+        post_id: 'Post ID 3',
+    }
+]
 
 function Moderator() {
     const auth = useContext(AuthContext);
@@ -22,6 +48,8 @@ function Moderator() {
     const { isLoading, error, sendRequest, clearError } = useHttpClient();
     const [loadedPlace, setLoadedPlace] = useState();
     const [ShowJoiningRequests, setShowJoiningRequests] = useState(false)
+    const [ShowReports, setShowReports] = useState(false)
+    const [loadedReports, setLoadedReports] = useState();
 
     const places_id = useParams().placeId
 
@@ -55,6 +83,18 @@ function Moderator() {
 
     //For Stats and Reports Redirect to seperate pages
 
+    //Use Useeffect to fetch reports data from backend
+    useEffect(() => {
+        const fetchReports = async () => {
+            try {
+                const responseData = await sendRequest(`http://localhost:5000/api/reports/${auth.userId}/${places_id}`, 'GET', null, {});
+                setLoadedReports(responseData.reports);
+                console.log(responseData.reports)
+            } catch (err) { }
+        }; fetchReports()
+    }, [sendRequest]);
+
+
     return (
         <React.Fragment>
             <div className='center'>
@@ -63,6 +103,12 @@ function Moderator() {
                 <Button inverse >Status</Button>
                 <Button inverse >Reports Page</Button>
             </div>
+            {/* <Card>
+                <div className='center'>
+                    <h2>Reports</h2>
+                </div>
+            </Card> */}
+            <ReportsList items={loadedReports}></ReportsList>
             <Modal show={ShowJoiningRequests}
                 header="Joining Requests"
                 contentClass="place-item__modal-content"

@@ -8,7 +8,8 @@ const postSchema = new Schema({
     postedBy: { type: mongoose.Types.ObjectId, required: true, ref: 'User' },
     Upvotes: [{ type: mongoose.Types.ObjectId, required: true, ref: 'User' }],
     Downvotes: [{ type: mongoose.Types.ObjectId, required: true, ref: 'User' }],
-    postedIn: { type: mongoose.Types.ObjectId, required: true, ref: 'Place' }
+    postedIn: { type: mongoose.Types.ObjectId, required: true, ref: 'Place' },
+    comments: [{ type: String}],
 })
 
 module.exports = mongoose.model('Post', postSchema)

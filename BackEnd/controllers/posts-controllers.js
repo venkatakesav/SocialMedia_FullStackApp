@@ -190,13 +190,16 @@ const getsavedPosts = async (req, res, next) => {
     let posts = [];
 
     console.log(user)
-    user.saved_posts.map(async (element) => {
+
+    for (const postId of user.saved_posts) {
         try {
-            posts.push(await Post.findById(element))
+          const post = await Post.findById(postId);
+          posts.push(post);
         } catch (err) {
-            console.log(err)
+          console.log(err);
         }
-    })
+      }
+    console.log(posts)
 
     res.json({ posts: (await posts).map(post => post.toObject({ getters: true })) })
 }

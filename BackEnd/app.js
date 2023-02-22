@@ -9,6 +9,7 @@ mongoose.set('strictQuery', false)  //To avoid the deprecation warning
 const placesRoutes = require("./routes/places_routes.js"); //You can use this as a middleware
 const usersRoutes = require("./routes/user_routes.js"); //You can use this as a middleware
 const postsRoutes = require("./routes/post_routes.js"); //You can use this as a middleware
+const reportsRoutes = require("./routes/reports_routes.js"); //You can use this as a middleware
 
 const app = express()
 
@@ -31,6 +32,8 @@ app.use('/api/places', placesRoutes) //And at the same time -> No need to add /a
 app.use('/api/users', usersRoutes)
 
 app.use('/api/posts', postsRoutes)
+
+app.use('/api/reports', reportsRoutes)
 
 app.use((req, res, next) => {
     const error = new HttpError('Could not find this route.', 404)

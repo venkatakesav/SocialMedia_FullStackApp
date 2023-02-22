@@ -15,6 +15,8 @@ const placeSchema = new Schema({
     creation_date: {type: Date, required: true, default: Date.now},
     rejected: [{type: mongoose.Types.ObjectId, required: true, ref: "User"}],
     posts: [{type: mongoose.Types.ObjectId, required: true, ref: "Post"}],
+    comments: [{type: String}],
+    reports: [{type: mongoose.Types.ObjectId, required: true, ref: "Report"}],
 });
 
 module.exports = mongoose.model('Place', placeSchema)

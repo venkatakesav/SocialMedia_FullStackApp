@@ -36,7 +36,7 @@ function Saved_Posts() {
         setReload(false)
     }, [sendRequest, place_id, reload])
 
-    console.log(auth.token)
+    console.log(loadedPosts)
 
     const showModal = () => {
         showUpdateConfirm(true);
