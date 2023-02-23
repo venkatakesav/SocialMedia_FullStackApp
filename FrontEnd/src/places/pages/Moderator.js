@@ -81,6 +81,22 @@ function Moderator() {
 
     const [showUsers, setShowUsers] = useState(false)
 
+    //Fetch Places with ID
+    const [loadedFollowers, setLoadedFollowers] = useState();
+    const [blockedUsers, setBlockedUsers] = useState();
+    useEffect(() => {
+        const fetchPlaces = async () => {
+            try {
+                const responseData = await sendRequest(`http://localhost:5000/api/places/${places_id}`);
+                setLoadedFollowers(responseData.place.followers);
+                setBlockedUsers(responseData.place.blocked)
+                console.log(responseData.place.followers)
+                console.log(responseData.place.blocked)
+            } catch (err) { }
+        }; fetchPlaces()
+    }, [sendRequest]);
+
+
     //For Stats and Reports Redirect to seperate pages
 
     //Use Useeffect to fetch reports data from backend
@@ -103,11 +119,6 @@ function Moderator() {
                 <Button inverse >Status</Button>
                 <Button inverse >Reports Page</Button>
             </div>
-            {/* <Card>
-                <div className='center'>
-                    <h2>Reports</h2>
-                </div>
-            </Card> */}
             <ReportsList items={loadedReports}></ReportsList>
             <Modal show={ShowJoiningRequests}
                 header="Joining Requests"
@@ -123,7 +134,7 @@ function Moderator() {
                 footerClass="place-item__modal-actions"
                 footer={<Button onClick={closeModalUsers}>CLOSE</Button>}
             >
-                {/* <UserMod items={loadedPlace}></UserMod> */}
+                <UserMod items={loadedFollowers} blockedUsers={blockedUsers}></UserMod>
             </Modal>
         </React.Fragment>
     )

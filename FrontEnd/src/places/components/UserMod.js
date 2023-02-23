@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function UserMod(props) {
 
-    if (props.items.length === 0) {
+    if (props.items.length === 0 || props.blockedUsers.length === 0) {
         return (
             <h2>No Followers Found!!!</h2>
         )
@@ -11,14 +11,16 @@ function UserMod(props) {
 
     return (
         <ul>
-            {/* {console.log(props.items.following)}
-            {props.items.following.map((element) => {
-                return <RelationItem_Following following={element}
-                    key={element.id}
-                />
-            })} */}
-            {console.log(props.items)}
-            <li>Hello</li>
+            {
+                props.items.map((element) => {
+                    return <p>{element}</p> //All Users -> Including Blocked
+                })
+            }
+            {
+                props.blockedUsers.map((element) => {
+                    return <p style={{color : "red"}}>{element}</p> //Blocked Users
+                })
+            }
         </ul>
     )
 }

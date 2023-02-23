@@ -282,7 +282,10 @@ const acceptRequest = async (req, res, next) => {
 
     try {
         place.requests.pull(userId)
-        place.followers.push(userId)
+        //Only if followers does not contain the user
+        if (!place.followers.includes(userId)) {
+            place.followers.push(userId)
+        }
         await place.save()
     }
     catch (err) {
@@ -329,7 +332,7 @@ const rejectRequest = async (req, res, next) => {
 const blockUser = async (req, res, next) => {
     //Obtain the User Id from body
     console.log("Block User")
-    const {userId, placeId} = req.body
+    const { userId, placeId } = req.body
 
     let place;
     console.log(placeId)

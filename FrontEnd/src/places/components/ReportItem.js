@@ -67,7 +67,7 @@ function ReportItem(props) {
                     console.log(`http://localhost:5000/api/places/${props.reported_per}/block`)
                     await sendRequest(`http://localhost:5000/api/places/${props.reported_per}/block`, 'PATCH', JSON.stringify({
                         userId: props.reported_per,
-                        placeId: loadedPost.place_id
+                        placeId: loadedPost.postedIn
                     }), {
                         'Content-Type': 'application/json',
                         Authorization: 'Bearer ' + auth.token

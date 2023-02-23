@@ -153,6 +153,48 @@ function PostItem(props) {
     }
   }
 
+  const [isLoadedPlace, setIsLoadedPlace] = useState(false);
+  const [isLoadedUser, setIsLoadedUser] = useState(false);
+
+  //Obtain the place in which the post was posted
+  const [loadedPlace, setLoadedPlace] = useState();
+  useEffect(() => {
+    const fetchPlace = async () => {
+      try {
+        const responseData = await sendRequest(`http://localhost:5000/api/places/${props.postedIn}`);
+        setLoadedPlace(responseData.place);
+        console.log(responseData.place)
+        setIsLoadedPlace(true);
+      } catch (err) { }
+    };
+    fetchPlace();
+  }, [sendRequest, props.place_id]);
+
+  //Obtain the user who posted the post
+  const [loadedUser, setLoadedUser] = useState();
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const responseData = await sendRequest(`http://localhost:5000/api/users/${props.postedBy}`);
+        setLoadedUser(responseData.users);
+        console.log(responseData.users)
+        setIsLoadedUser(true);
+      } catch (err) { }
+    };
+    fetchUser();
+  }, [sendRequest, props.postedBy]);
+
+  //Check if the user is in the blocked list of the loaded places
+  const [isBlocked, setIsBlocked] = useState(false);
+  useEffect(() => {
+    if (loadedPlace && loadedUser) {
+      console.log(loadedPlace.blocked)
+      if (loadedPlace.blocked.includes(loadedUser.id)) {
+        setIsBlocked(true);
+      }
+    }
+  }, [loadedPlace, loadedUser])
+
 
   return (
     <React.Fragment>
@@ -166,10 +208,10 @@ function PostItem(props) {
           <div className="place-item__info">
             <h2>{props.title}</h2>
             <h3>{props.description}</h3>
-            {/* <h3>Tags: {props.tags}</h3>
-              <h3>Banned Words: {props.bannedKeyWords}</h3>
-              <h3>Creation Time: {props.creationTime}</h3>
-              <p>{props.description}</p> */}
+            {/* {console.log(loadedUser)} */}
+            {isBlocked && <p>Blocked User</p>}
+            {!isBlocked && loadedUser && <p>{loadedUser.name}</p>}
+            {loadedPlace && <p>{loadedPlace.title}</p>}
           </div>
           <div className="place-item__actions">
             {auth.userId != props.creatorId && auth.isLoggedIn && <Button onClick={upvoteHandler}>UP</Button>}
