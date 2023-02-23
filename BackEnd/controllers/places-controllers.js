@@ -245,6 +245,7 @@ const leavePlace = async (req, res, next) => {
 
     try {
         place.blocked.push(userId)
+        place.followers.pull(userId)
         await place.save()
     }
     catch (err) {
@@ -323,6 +324,40 @@ const rejectRequest = async (req, res, next) => {
     }
 }
 
+//Write a patch request to add a user to blocked place
+
+const blockUser = async (req, res, next) => {
+    //Obtain the User Id from body
+    console.log("Block User")
+    const {userId, placeId} = req.body
+
+    let place;
+    console.log(placeId)
+    try {
+        place = await Place.findById(placeId)
+    }
+    catch (err) {
+        const error = new HttpError('Something went wrong, could not block user.', 500)
+        return next(error)
+    }
+
+    if (!place) {
+        const error = new HttpError('Could not find place for this id.', 404)
+        return next(error)
+    }
+
+    try {
+        place.blocked.push(userId)
+        await place.save()
+    }
+    catch (err) {
+        const error = new HttpError('Something went wrong, could not block user.', 500)
+        return next(error)
+    }
+
+    res.status(200).json({ place: place.toObject({ getters: true }) }) //Return the updated place
+}
+
 exports.UpdatePlace = UpdatePlace //Export the UpdatePlace function
 exports.getPlaceByPid = getPlaceByPid; //Basically you export a pointer to that function
 exports.getPlaceByUid = getPlaceByUid //Basically you export a pointer to that function -> Express decides when to call it
@@ -333,3 +368,4 @@ exports.requestPlace = requestPlace
 exports.leavePlace = leavePlace
 exports.acceptRequest = acceptRequest
 exports.rejectRequest = rejectRequest
+exports.blockUser = blockUser

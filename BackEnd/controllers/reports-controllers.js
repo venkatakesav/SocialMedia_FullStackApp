@@ -50,7 +50,14 @@ const getReport = async (req, res, next) => {
         return next(error);
     }
 
-    res.json({ reports: (await reports).map(report => report.toObject({ getters: true })) })
+    console.log(reports.length);
+    if(reports.length === 0){
+        return res.json({ reports: [] })
+    }
+
+    res.json({
+        reports: (await reports).filter(report => report !== null).map(report => report.toObject({ getters: true }))
+      })
     // console.log("GET Request to the homepage -> Places_routes");
 }
 
@@ -114,5 +121,91 @@ const createReport = async (req, res, next) => {
     res.status(201).json(createdReport)
 }
 
+const ignoreSet = async (req, res, next) => {
+    console.log("PATCH Request to the homepage -> Reports_routes")
+    r_id = req.params.rid; //Obtain the report Id
+
+    //Obtain the report
+    let report;
+    try {
+        report = await Report.findById(r_id);
+    }
+
+    catch (err) {
+        const error = new HttpError(
+            'Something went wrong, could not find report.',
+            500
+        );
+        return next(error);
+    }
+
+    console.log(report)
+
+    //Patch the ignore status to true
+    report.isIgnored = true;
+
+    try{
+        await report.save();
+    }
+    catch (err) {
+        const error = new HttpError(
+            'Something went wrong, could not save report.',
+            500
+        );
+        return next(error);
+    }
+
+    console.log(report)
+
+    res.status(200).json({report: report.toObject({ getters: true })})
+}
+
+//Write a function to delete a report
+const deleteReport = async (req, res, next) => {
+    console.log("DELETE Request to the homepage -> Reports_routes")
+    r_id = req.params.rid; //Obtain the report Id
+
+    //Obtain the report
+    let report;
+    try {
+        report = await Report.findById(r_id);
+    }
+    catch (err) {
+        const error = new HttpError(
+            'Something went wrong, could not find report.',
+            500
+        );
+        return next(error);
+    }
+
+    console.log(report)
+
+    //Delete the report
+    try{
+        const sess = await mongoose.startSession();
+        sess.startTransaction();
+        const result = await report.remove({session: sess});
+        if(!result){
+            const error = new HttpError(
+                'Something went wrong, could not delete report.',
+                500
+            );
+            return next(error);
+        }
+        await sess.commitTransaction();
+    }
+    catch (err) {
+        const error = new HttpError(
+            'Something went wrong, could not delete report.',
+            500
+        );
+        return next(error);
+    }
+
+    res.status(200).json({message: 'Deleted report.'})
+}
+
 exports.getReport = getReport;
 exports.createReport = createReport;
+exports.ignoreSet = ignoreSet;
+exports.deleteReport = deleteReport;

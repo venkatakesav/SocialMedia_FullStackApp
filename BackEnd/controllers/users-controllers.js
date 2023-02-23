@@ -9,6 +9,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 const getUsers = async (req, res, next) => {
+    console.log("GET Request to the homepage -> Users_routes")
     const uid = req.params.uid //This contains the user id of the user requested
     console.log(uid)
     let users
@@ -266,9 +267,41 @@ const removeUser = async (req, res, next) => {
     res.status(201).json({ user: user_object.toObject({ getters: true }) })
 }
 
+//Write code for update user
+const updateUser = async (req, res, next) => {
+    console.log("Update User")
+    const uid = req.params.uid
+    const { age, contact, email, name} = req.body
+
+    let user;
+    try {
+        user = await User.findById(uid)
+    }
+    catch (err) {
+        const error = new HttpError('Something went wrong, could not update user.', 500)
+        return next(error)
+    }
+
+    user.age = age;
+    user.contact = contact;
+    user.email = email;
+    user.name = name;
+
+    try {
+        await user.save()
+    }
+    catch (err) {
+        const error = new HttpError('Something went wrong, could not update user.', 500)
+        return next(error)
+    }
+
+    res.status(201).json({ user: user.toObject({ getters: true }) })
+}
+
 exports.getUsers = getUsers;
 exports.signup = signup;
 exports.login = login;
 exports.followUser = followUser;
 exports.unfollowUser = unfollowUser;
 exports.removeUser = removeUser;
+exports.updateUser = updateUser;

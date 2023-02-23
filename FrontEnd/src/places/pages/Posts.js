@@ -113,7 +113,7 @@ function Posts() {
         </Modal>
         <button onClick={showModal} className="button"
             style={{ width: "50%", marginLeft: "25%" }}>New Post</button>
-        {!isLoading && loadedPosts && <PostList items={loadedPosts} user__id={auth.userId} place__id={place_id} />}
+        {!isLoading && loadedPosts && <PostList items={loadedPosts} user__id={auth.userId} place__id={place_id} isSaved={false}/>}
         {console.log(`http://localhost:5000/api/posts/${auth.userId}/${place_id}`)}
     </React.Fragment>;
 }

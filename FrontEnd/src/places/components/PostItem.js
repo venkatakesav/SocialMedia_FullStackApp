@@ -17,6 +17,7 @@ import { VALIDATOR_REQUIRE, VALIDATOR_MINLENGTH } from "../../shared/util/valida
 function PostItem(props) {
   let pid = useParams().placeId
 
+  const [reload, setReload] = useState(false)
   const [formState, inputHandler] = useForm(
     {
       concern: {
@@ -137,6 +138,22 @@ function PostItem(props) {
     }
   }
 
+  const deleteSavedPost = async (event) => {
+    event.preventDefault()
+    console.log("DELETING.......");
+    try {
+      console.log(props.id)
+      await sendRequest(`http://localhost:5000/api/posts/${auth.userId}/${props.id}/delete`, 'PATCH', JSON.stringify({
+      }), {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + auth.token
+      })
+    } catch (err) {
+      console.log("Error")
+    }
+  }
+
+
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
@@ -159,6 +176,8 @@ function PostItem(props) {
             {auth.isLoggedIn && <Button danger onClick={downvoteHandler}>DOWN</Button>}
             {auth.userId != props.postedBy && auth.isLoggedIn && <Button onClick={followHandler} disabled={disable}>FOLLOW</Button>}
             {auth.userId != props.postedBy && auth.isLoggedIn && <Button danger onClick={showModal}>REPORT</Button>}
+            {/* {console.log(props.isSaved)} */}
+            {props.isSaved && <Button onClick={deleteSavedPost}>DELETE</Button>}
             <Button onClick={saveHandler}>SAVE</Button>
           </div>
         </Card>

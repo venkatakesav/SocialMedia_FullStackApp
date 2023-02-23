@@ -7,6 +7,7 @@ const checkAuth = require('../middleware/auth')
 router.get('/:pid', placesController.getPlaceByPid)
 router.get('/users/:uid', placesController.getPlaceByUid)
 router.get('/users/:uid/my', placesController.getSpecificPlaceByUid)
+router.patch('/:uid/block', placesController.blockUser)
 
 router.use(checkAuth) //This is a middleware that will be executed for all the routes below
 router.post('/', placesController.createPlace)

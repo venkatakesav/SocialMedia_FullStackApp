@@ -18,29 +18,29 @@ import ReportsList from '../components/ReportsList';
 import Card from '../../shared/components/UIElements/Card';
 import './UserPlaces.css';
 
-const DUMMY_REPORTS = [
-    {
-        id: 'r1',
-        reported_by: 'Reported By',
-        reported_per: 'Reported On',
-        concern: 'Concern',
-        post_id: 'Post ID',
-    },
-    {
-        id: 'r2',
-        reported_by: 'Reported By 2',
-        reported_per: 'Reported On 2',
-        concern: 'Concern 2',
-        post_id: 'Post ID 2',
-    },
-    {
-        id: 'r3',
-        reported_by: 'Reported By 3',
-        reported_per: 'Reported On 3',
-        concern: 'Concern 3',
-        post_id: 'Post ID 3',
-    }
-]
+// const DUMMY_REPORTS = [
+//     {
+//         id: 'r1',
+//         reported_by: 'Reported By',
+//         reported_per: 'Reported On',
+//         concern: 'Concern',
+//         post_id: 'Post ID',
+//     },
+//     {
+//         id: 'r2',
+//         reported_by: 'Reported By 2',
+//         reported_per: 'Reported On 2',
+//         concern: 'Concern 2',
+//         post_id: 'Post ID 2',
+//     },
+//     {
+//         id: 'r3',
+//         reported_by: 'Reported By 3',
+//         reported_per: 'Reported On 3',
+//         concern: 'Concern 3',
+//         post_id: 'Post ID 3',
+//     }
+// ]
 
 function Moderator() {
     const auth = useContext(AuthContext);

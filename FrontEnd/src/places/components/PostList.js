@@ -13,6 +13,7 @@ function PostList(props) {
           description={post.description}
           postedBy={post.postedBy}
           postedIn={post.postedIn}
+          isSaved = {props.isSaved}
         />))}
     </ul>
   )

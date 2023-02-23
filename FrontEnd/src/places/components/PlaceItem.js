@@ -99,12 +99,16 @@ const PlaceItem = props => {
           setIsAllowed(true);
           console.log("ALLOWED")
         }
+        if(responseData.place.blocked.includes(auth.userId)){
+          setIsBlocked(true);
+        }
       } catch (err) {
         console.log("Error")
       }
     }
     checkIfAllowed()
   }, [sendRequest, auth.userId, props.id])
+
 
   return (
     <>
@@ -136,8 +140,8 @@ const PlaceItem = props => {
             <div className="place-item__actions">
               {isAllowed && <Button inverse to={`/${props.id}/posts`}>NAVIGATE TO SUBREDDIT PAGE</Button>}
               {/* {console.log(isAllowed)} */}
-              {auth.userId != props.creatorId && auth.isLoggedIn && <Button onClick={joinSubredditHandler} disabled={isRequested}>JOIN</Button>}
-              {isAllowed && auth.userId != props.creatorId && auth.isLoggedIn && isRequested && <Button onClick={leaveSubgredditHandler} >LEAVE</Button>}
+              {auth.userId != props.creatorId && auth.isLoggedIn && <Button onClick={joinSubredditHandler} disabled={isRequested || isBlocked}>JOIN</Button>}
+              {isAllowed && auth.userId != props.creatorId && auth.isLoggedIn && isRequested && <Button onClick={leaveSubgredditHandler}>LEAVE</Button>}
               {auth.userId == props.creatorId && auth.isLoggedIn && <Button to={`/places/${props.id}`}>EDIT</Button>}
               {auth.userId == props.creatorId && auth.isLoggedIn && <Button danger onClick={showDeleteWarningHandler}>DELETE</Button>}
             </div>

@@ -51,7 +51,7 @@ function Saved_Posts() {
     return <React.Fragment>
         <ErrorModal error={error} onClear={clearError} />
         {isLoading && <div className='center'><LoadingSpinner></LoadingSpinner></div>}
-        {!isLoading && loadedPosts && <PostList items={loadedPosts} user__id={auth.userId} place__id={place_id} />}
+        {!isLoading && loadedPosts && <PostList items={loadedPosts} user__id={auth.userId} place__id={place_id} isSaved={true}/>}
         {console.log(`http://localhost:5000/api/posts/${auth.userId}/user_saved/saved`)}
     </React.Fragment>;
 }

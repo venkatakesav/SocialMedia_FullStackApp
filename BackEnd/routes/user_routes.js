@@ -4,6 +4,7 @@ const userController = require('../controllers/users-controllers');
 const router = express.Router(); //Export the Router
 
 router.get('/:uid', userController.getUsers)
+router.patch('/update/:uid', userController.updateUser)
 router.post('/signup', userController.signup)
 router.post('/login', userController.login)
 router.patch('/:uid', userController.followUser)

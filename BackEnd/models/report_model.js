@@ -7,6 +7,8 @@ const reportSchema = new Schema({
     reportedPost: { type: mongoose.Types.ObjectId, required: true, ref: 'Post' },
     concern: { type: String, required: true },
     reportedUser: { type: mongoose.Types.ObjectId, required: true, ref: 'User' },
+    isIgnored: { type: Boolean, required: true, default: false },
+    creationDate: { type: Date, required: true, default: Date.now },
 })
 
 module.exports = mongoose.model('Report', reportSchema)
