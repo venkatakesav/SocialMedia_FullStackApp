@@ -27,7 +27,7 @@ const PlaceItem = props => {
   const confirmDeleteHandler = async () => {
     console.log("DELETING.......");
     try {
-      await sendRequest(`http://localhost:5000/api/places/${props.id}`, 'DELETE', null, {
+      await sendRequest(`/api/places/${props.id}`, 'DELETE', null, {
         Authorization: 'Bearer ' + auth.token
       })
     } catch (err) {
@@ -38,7 +38,7 @@ const PlaceItem = props => {
   const joinSubredditHandler = async () => {
     console.log("JOINING.......");
     try {
-      await sendRequest(`http://localhost:5000/api/places/${props.id}`, 'PATCH', JSON.stringify({
+      await sendRequest(`/api/places/${props.id}`, 'PATCH', JSON.stringify({
         userId: auth.userId
       }),
         { 'Content-Type': 'application/json' ,

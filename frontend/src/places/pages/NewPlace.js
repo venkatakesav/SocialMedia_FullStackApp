@@ -43,7 +43,7 @@ const NewPlace = () => {
     event.preventDefault();
     console.log(formState.inputs); // send this to the backend!
     try {
-      await sendRequest('http://localhost:5000/api/places', 'POST', JSON.stringify({
+      await sendRequest('/api/places', 'POST', JSON.stringify({
         title: formState.inputs.title.value,
         description: formState.inputs.description.value,
         tags: formState.inputs.tags.value,

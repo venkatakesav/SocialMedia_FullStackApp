@@ -30,7 +30,7 @@ const UserItem = props => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const responseData = await sendRequest(`http://localhost:5000/api/users/${Login_user}`);
+        const responseData = await sendRequest(`/api/users/${Login_user}`);
         setLoadedUsers(responseData.users);
         console.log(responseData.users)
       } catch (err) { }
@@ -93,7 +93,7 @@ const UserItem = props => {
     console.log(formState.inputs); // send this to the backend!
 
     try {
-      await sendRequest(`http://localhost:5000/api/users/update/${Login_user}`, 'PATCH', JSON.stringify({
+      await sendRequest(`/api/users/update/${Login_user}`, 'PATCH', JSON.stringify({
         name: formState.inputs.name.value,
         email: formState.inputs.email.value,
         age: formState.inputs.age.value,

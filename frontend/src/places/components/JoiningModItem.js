@@ -20,7 +20,7 @@ function JoiningModItem(props) {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/api/users/${Login_user}`);
+                const responseData = await sendRequest(`/api/users/${Login_user}`);
                 setLoadedUsers(responseData.users);
             } catch (err) { }
         }; fetchUsers()
@@ -29,10 +29,10 @@ function JoiningModItem(props) {
     const acceptHandler = async () => {
         try {
             console.log(
-                `http://localhost:5000/api/places/accept/${places_id}`
+                `/api/places/accept/${places_id}`
             )
             await sendRequest(
-                `http://localhost:5000/api/places/accept/${places_id}`,
+                `/api/places/accept/${places_id}`,
                 'PATCH',
                 JSON.stringify({
                     userId: Login_user,
@@ -52,7 +52,7 @@ function JoiningModItem(props) {
     const rejectHandler = async () => {
         try {
             await sendRequest(
-                `http://localhost:5000/api/places/reject/${places_id}`,
+                `/api/places/reject/${places_id}`,
                 'PATCH',
                 JSON.stringify({
                     userId: Login_user,

@@ -28,7 +28,7 @@ function Saved_Posts() {
     useEffect(() => {
         const fetchPosts_saved = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/api/posts/${auth.userId}/user_saved/saved`)
+                const responseData = await sendRequest(`/api/posts/${auth.userId}/user_saved/saved`)
                 setLoadedPosts(responseData.posts)
             } catch (err) {
             };
@@ -52,7 +52,7 @@ function Saved_Posts() {
         <ErrorModal error={error} onClear={clearError} />
         {isLoading && <div className='center'><LoadingSpinner></LoadingSpinner></div>}
         {!isLoading && loadedPosts && <PostList items={loadedPosts} user__id={auth.userId} place__id={place_id} isSaved={true}/>}
-        {console.log(`http://localhost:5000/api/posts/${auth.userId}/user_saved/saved`)}
+        {console.log(`/api/posts/${auth.userId}/user_saved/saved`)}
     </React.Fragment>;
 }
 export default Saved_Posts

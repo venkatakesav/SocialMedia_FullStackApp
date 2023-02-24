@@ -36,7 +36,7 @@ function Auth() {
         // console.log(formState.inputs)
         if (isLoginMode) {
             try {
-                const response = await sendRequest('http://localhost:5000/api/users/login', 'POST',
+                const response = await sendRequest('/api/users/login', 'POST',
                     JSON.stringify({
                         email: formState.inputs.email.value,
                         password: formState.inputs.password.value
@@ -54,7 +54,7 @@ function Auth() {
         }
         else {
             try {
-                const response = await sendRequest('http://localhost:5000/api/users/signup', 'POST',
+                const response = await sendRequest('/api/users/signup', 'POST',
                     JSON.stringify({
                         name: formState.inputs.name.value,
                         email: formState.inputs.email.value,

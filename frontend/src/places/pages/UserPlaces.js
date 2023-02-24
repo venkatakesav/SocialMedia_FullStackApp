@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useHttpClient } from '../../shared/hooks/http-hook';
-import MyPlaceList from '../components/MyPlaceList';
+import PlaceList from '../components/PlaceList';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import Input from '../../shared/components/FormElements/Input';
 import { VALIDATOR_MINLENGTH } from '../../shared/util/validators';
@@ -12,7 +12,7 @@ import Button from '../../shared/components/FormElements/Button';
 import './UserPlaces.css';
 
 
-const MyUserPlaces = () => {
+const UserPlaces = () => {
   const [loadedPlaces, setLoadedPlaces] = useState();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [searchPlace, setSearchPlace] = useState();
@@ -27,7 +27,7 @@ const MyUserPlaces = () => {
   useEffect(() => {
     const fetchPlaces = async () => {
       try {
-        const responseData = await sendRequest(`http://localhost:5000/api/places/users/${userId}/my`)
+        const responseData = await sendRequest(`/api/places/users/${userId}`)
         setLoadedPlaces(responseData.places_user)
       } catch (err) {
       };
@@ -94,13 +94,13 @@ const MyUserPlaces = () => {
       <Button inverse onClick={setFollowers_confirm}>Followers</Button>
       <Button inverse onClick={setDescending_confirm}>Descending</Button>
       <Button inverse onClick={setCreationDate_confirm}>Creation Date</Button></div>
-    {!isLoading && loadedPlaces && <MyPlaceList items={loadedPlaces} searchVal={searchPlace} searchTags={finalTags}
+    {!isLoading && loadedPlaces && <PlaceList items={loadedPlaces} searchVal={searchPlace} searchTags={finalTags}
     isAscending={isAscending} isFollowers={isFollowers} isDescending={isDescending} isCreationDate={isCreationDate}
     />}
-    {console.log(`http://localhost:5000/api/places/users/${userId}`)}
+    {console.log(`/api/places/users/${userId}`)}
   </React.Fragment>;
 
 // onClick={setIsAscending(true)}
 };
 
-export default MyUserPlaces;
+export default UserPlaces;

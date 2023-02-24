@@ -28,7 +28,7 @@ function ReportItem(props) {
     const confirmDeleteHandler = async () => {
         console.log("DELETING.......");
         try {
-            await sendRequest(`http://localhost:5000/api/places/${props.id}`, 'DELETE', null, {
+            await sendRequest(`/api/places/${props.id}`, 'DELETE', null, {
                 Authorization: 'Bearer ' + auth.token
 
             })
@@ -41,7 +41,7 @@ function ReportItem(props) {
         event.preventDefault()
         console.log("IGNORING.......");
         try {
-            await sendRequest(`http://localhost:5000/api/reports/${props.id}`, 'PATCH', JSON.stringify({}), {
+            await sendRequest(`/api/reports/${props.id}`, 'PATCH', JSON.stringify({}), {
                 'Content-Type': 'application/json',
                 Authorization: 'Bearer ' + auth.token
             })
@@ -64,8 +64,8 @@ function ReportItem(props) {
             console.log("BLOCKING.......");
             const blockUser = async () => {
                 try {
-                    console.log(`http://localhost:5000/api/places/${props.reported_per}/block`)
-                    await sendRequest(`http://localhost:5000/api/places/${props.reported_per}/block`, 'PATCH', JSON.stringify({
+                    console.log(`/api/places/${props.reported_per}/block`)
+                    await sendRequest(`/api/places/${props.reported_per}/block`, 'PATCH', JSON.stringify({
                         userId: props.reported_per,
                         placeId: loadedPost.postedIn
                     }), {
@@ -97,7 +97,7 @@ function ReportItem(props) {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/api/users/${props.reported_by}`);
+                const responseData = await sendRequest(`/api/users/${props.reported_by}`);
                 setLoadedUser(responseData.users);
                 console.log(responseData.users)
             } catch (err) { }
@@ -110,7 +110,7 @@ function ReportItem(props) {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/api/users/${props.reported_per}`);
+                const responseData = await sendRequest(`/api/users/${props.reported_per}`);
                 setLoadedReportedUser(responseData.users);
                 console.log(responseData.users)
             } catch (err) { }
@@ -123,7 +123,7 @@ function ReportItem(props) {
     useEffect(() => {
         const fetchPost = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/api/posts/${props.post_id}`);
+                const responseData = await sendRequest(`/api/posts/${props.post_id}`);
                 setLoadedPost(responseData.post);
             } catch (err) { }
         };
@@ -139,7 +139,7 @@ function ReportItem(props) {
         event.preventDefault()
         console.log("DELETING.......");
         try {
-            await sendRequest(`http://localhost:5000/api/posts/${auth.userId}/${props.post_id}`, 'DELETE', null, {
+            await sendRequest(`/api/posts/${auth.userId}/${props.post_id}`, 'DELETE', null, {
                 //Add Authorization header
                 Authorization: 'Bearer ' + auth.token
 
@@ -150,7 +150,7 @@ function ReportItem(props) {
 
         console.log("DELETING REPORT.......");
         try {
-            await sendRequest(`http://localhost:5000/api/reports/${props.id}`, 'DELETE', null, {})
+            await sendRequest(`/api/reports/${props.id}`, 'DELETE', null, {})
         }
         catch (err) {
             console.log("Error")
@@ -162,7 +162,7 @@ function ReportItem(props) {
         event.preventDefault()
         console.log("BLOCKING.......");
         try {
-            await sendRequest(`http://localhost:5000/api/places/${props.reported_per}/block`, 'PATCH', JSON.stringify({
+            await sendRequest(`/api/places/${props.reported_per}/block`, 'PATCH', JSON.stringify({
                 userId: props.reported_per,
                 placeId: loadedPost.place_id
             }), {

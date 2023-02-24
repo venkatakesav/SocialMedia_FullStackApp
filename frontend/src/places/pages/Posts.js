@@ -42,7 +42,7 @@ function Posts() {
     useEffect(() => {
         const fetchPlaces = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/api/posts/${auth.userId}/${place_id}`)
+                const responseData = await sendRequest(`/api/posts/${auth.userId}/${place_id}`)
                 setLoadedPosts(responseData.posts)
             } catch (err) {
             };
@@ -56,7 +56,7 @@ function Posts() {
         event.preventDefault();
         console.log(formState.inputs); // send this to the backend!
         try {
-            await sendRequest(`http://localhost:5000/api/posts/${auth.userId}/${place_id}`, 'POST', JSON.stringify({
+            await sendRequest(`/api/posts/${auth.userId}/${place_id}`, 'POST', JSON.stringify({
                 title: formState.inputs.title.value,
                 description: formState.inputs.description.value,
             }),
@@ -114,7 +114,7 @@ function Posts() {
         <button onClick={showModal} className="button"
             style={{ width: "50%", marginLeft: "25%" }}>New Post</button>
         {!isLoading && loadedPosts && <PostList items={loadedPosts} user__id={auth.userId} place__id={place_id} isSaved={false}/>}
-        {console.log(`http://localhost:5000/api/posts/${auth.userId}/${place_id}`)}
+        {console.log(`/api/posts/${auth.userId}/${place_id}`)}
     </React.Fragment>;
 }
 export default Posts

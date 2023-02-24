@@ -44,7 +44,7 @@ function PostItem(props) {
   const confirmDeleteHandler = async () => {
     console.log("DELETING.......");
     try {
-      await sendRequest(`http://localhost:5000/api/places/${props.id}`, 'DELETE', null, {
+      await sendRequest(`/api/places/${props.id}`, 'DELETE', null, {
         Authorization: 'Bearer ' + auth.token
 
       })
@@ -58,7 +58,7 @@ function PostItem(props) {
     console.log("FOLLOWING.......");
     try {
       console.log(props.id)
-      await sendRequest(`http://localhost:5000/api/users/${auth.userId}`, 'PATCH', JSON.stringify({
+      await sendRequest(`/api/users/${auth.userId}`, 'PATCH', JSON.stringify({
         post_id: props.id
       }), {
         'Content-Type': 'application/json',
@@ -73,10 +73,10 @@ function PostItem(props) {
   /*Make a Upvote handler */
   const upvoteHandler = async (event) => {
     event.preventDefault()
-    console.log(`http://localhost:5000/api/posts/${props.id}/upvote`);
+    console.log(`/api/posts/${props.id}/upvote`);
     try {
       console.log(props.id)
-      await sendRequest(`http://localhost:5000/api/posts/${auth.userId}/${props.id}/upvote`, 'PATCH', JSON.stringify({
+      await sendRequest(`/api/posts/${auth.userId}/${props.id}/upvote`, 'PATCH', JSON.stringify({
       }), {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + auth.token
@@ -89,10 +89,10 @@ function PostItem(props) {
   /*Make A Downvote Handler */
   const downvoteHandler = async (event) => {
     event.preventDefault()
-    console.log(`http://localhost:5000/api/posts/${props.id}/downvote`);
+    console.log(`/api/posts/${props.id}/downvote`);
     try {
       console.log(props.id)
-      await sendRequest(`http://localhost:5000/api/posts/${auth.userId}/${props.id}/downvote`, 'PATCH', JSON.stringify({
+      await sendRequest(`/api/posts/${auth.userId}/${props.id}/downvote`, 'PATCH', JSON.stringify({
       }), {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + auth.token
@@ -108,7 +108,7 @@ function PostItem(props) {
     console.log("SAVING.......");
     try {
       console.log(props.id)
-      await sendRequest(`http://localhost:5000/api/posts/${auth.userId}/user_saved/saved`, 'PATCH', JSON.stringify({
+      await sendRequest(`/api/posts/${auth.userId}/user_saved/saved`, 'PATCH', JSON.stringify({
         post_id: props.id
       }), {
         'Content-Type': 'application/json',
@@ -126,7 +126,7 @@ function PostItem(props) {
     try {
 
       console.log(props.id)
-      await sendRequest(`http://localhost:5000/api/reports/${auth.userId}/${pid}`, 'POST', JSON.stringify({
+      await sendRequest(`/api/reports/${auth.userId}/${pid}`, 'POST', JSON.stringify({
         post_id: props.id,
         concern: formState.inputs.concern.value
       }), {
@@ -143,7 +143,7 @@ function PostItem(props) {
     console.log("DELETING.......");
     try {
       console.log(props.id)
-      await sendRequest(`http://localhost:5000/api/posts/${auth.userId}/${props.id}/delete`, 'PATCH', JSON.stringify({
+      await sendRequest(`/api/posts/${auth.userId}/${props.id}/delete`, 'PATCH', JSON.stringify({
       }), {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + auth.token
@@ -161,7 +161,7 @@ function PostItem(props) {
   useEffect(() => {
     const fetchPlace = async () => {
       try {
-        const responseData = await sendRequest(`http://localhost:5000/api/places/${props.postedIn}`);
+        const responseData = await sendRequest(`/api/places/${props.postedIn}`);
         setLoadedPlace(responseData.place);
         console.log(responseData.place)
         setIsLoadedPlace(true);
@@ -175,7 +175,7 @@ function PostItem(props) {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const responseData = await sendRequest(`http://localhost:5000/api/users/${props.postedBy}`);
+        const responseData = await sendRequest(`/api/users/${props.postedBy}`);
         setLoadedUser(responseData.users);
         console.log(responseData.users)
         setIsLoadedUser(true);

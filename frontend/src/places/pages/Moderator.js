@@ -56,7 +56,7 @@ function Moderator() {
     useEffect(() => {
         const fetchPlaces = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/api/places/${places_id}`);
+                const responseData = await sendRequest(`/api/places/${places_id}`);
                 setLoadedPlace(responseData.place);
                 console.log(responseData.place)
             } catch (err) { }
@@ -87,7 +87,7 @@ function Moderator() {
     useEffect(() => {
         const fetchPlaces = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/api/places/${places_id}`);
+                const responseData = await sendRequest(`/api/places/${places_id}`);
                 setLoadedFollowers(responseData.place.followers);
                 setBlockedUsers(responseData.place.blocked)
                 console.log(responseData.place.followers)
@@ -103,7 +103,7 @@ function Moderator() {
     useEffect(() => {
         const fetchReports = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/api/reports/${auth.userId}/${places_id}`, 'GET', null, {});
+                const responseData = await sendRequest(`/api/reports/${auth.userId}/${places_id}`, 'GET', null, {});
                 setLoadedReports(responseData.reports);
                 console.log(responseData.reports)
             } catch (err) { }

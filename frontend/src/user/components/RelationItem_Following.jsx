@@ -18,7 +18,7 @@ function RelationItem(props) {
     const unfollow_user_handler = async () => {
         console.log(loadedUsers.id)
         try{
-            const responseData = await sendRequest(`http://localhost:5000/api/users/unfollow/${auth.userId}`, 'PATCH', JSON.stringify({
+            const responseData = await sendRequest(`/api/users/unfollow/${auth.userId}`, 'PATCH', JSON.stringify({
                 user_to_unfollow: loadedUsers.id
             }), {
                 'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ function RelationItem(props) {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const responseData = await sendRequest(`http://localhost:5000/api/users/${Login_user}`);
+                const responseData = await sendRequest(`/api/users/${Login_user}`);
                 setLoadedUsers(responseData.users);
                 console.log(responseData.users)
             } catch (err) { }

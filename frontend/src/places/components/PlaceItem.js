@@ -37,7 +37,7 @@ const PlaceItem = props => {
   const confirmDeleteHandler = async () => {
     console.log("DELETING.......");
     try {
-      await sendRequest(`http://localhost:5000/api/places/${props.id}`, 'DELETE', null, {
+      await sendRequest(`/api/places/${props.id}`, 'DELETE', null, {
         Authorization: 'Bearer ' + auth.token
       })
     } catch (err) {
@@ -48,7 +48,7 @@ const PlaceItem = props => {
   const joinSubredditHandler = async () => {
     console.log("JOINING.......");
     try {
-      await sendRequest(`http://localhost:5000/api/places/request/${props.id}`, 'PATCH', JSON.stringify({
+      await sendRequest(`/api/places/request/${props.id}`, 'PATCH', JSON.stringify({
         userId: auth.userId
       }),
         { 'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ const PlaceItem = props => {
   const leaveSubgredditHandler = async () => {
     console.log("LEAVING.......");
     try {
-      await sendRequest(`http://localhost:5000/api/places/leave/${props.id}`, 'PATCH', JSON.stringify({
+      await sendRequest(`/api/places/leave/${props.id}`, 'PATCH', JSON.stringify({
         userId: auth.userId
       }),
         { 'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ const PlaceItem = props => {
     const checkIfRequested = async () => {
       console.log("CHECKING.......");
       try {
-        const responseData = await sendRequest(`http://localhost:5000/api/places/${props.id}`, 'GET', null, {})
+        const responseData = await sendRequest(`/api/places/${props.id}`, 'GET', null, {})
         console.log(responseData)
         if (responseData.place.requests.includes(auth.userId)) {
           setIsRequested(true);
@@ -93,7 +93,7 @@ const PlaceItem = props => {
     const checkIfAllowed = async () => {
       console.log("CHECKING....... IF ALLOWED");
       try {
-        const responseData = await sendRequest(`http://localhost:5000/api/places/${props.id}`, 'GET', null, {})
+        const responseData = await sendRequest(`/api/places/${props.id}`, 'GET', null, {})
         console.log(responseData)
         if (responseData.place.followers.includes(auth.userId)) {
           setIsAllowed(true);
